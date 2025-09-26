@@ -28,12 +28,12 @@
             --shadow-soft: 0 10px 30px rgba(0,0,0,.7);
             --grad-title: linear-gradient(90deg, #ffffff 0%, #9d8aff 40%, #6a5df9 100%);
             --grad-accent: linear-gradient(90deg, #7b68ee, #6a5acd, #483d8b);
-            --success: #00ff9d;
-            --warning: #ffcc00;
-            --error: #ff3366;
-            --info: #00ccff;
-            --primary: #5a4ff3;
-            --primary-light: #7b68ee;
+            --success: #48bb78; /* Verde */
+            --warning: #ed8936; /* Laranja */
+            --error: #f56565;   /* Vermelho */
+            --info: #63b3ff; /* Azul claro */
+            --primary: #1e90ff; /* Azul principal */
+            --primary-light: #63b3ff; /* Azul claro */
             --accent: #9370db;
             --neon-purple: #bf00ff;
             --neon-blue: #0047ff;
@@ -47,27 +47,44 @@
         }
 
         body {
-            font-family: 'Cyberpunk', 'Orbitron', sans-serif;
-            color: var(--text);
-            height: 100%;
+           font-family: 'Inter', sans-serif; /*ok*/
+           color: var(--text-primary);height: 100%; /*ok*/
             margin: 0;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(74, 0, 224, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(88, 12, 163, 0.2) 0%, transparent 40%),
-                linear-gradient(160deg, #0a0a12 0%, #0f0f1a 50%, #070710 100%);
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
+            /* Imagem de fundo personalizada do expansao.php */
+            --custom-background-image: url('https://trollchipss.netlify.app/logo-trollchips.png');
+            --custom-background-position: center;
+            --custom-background-size: cover;
+            --custom-background-repeat: no-repeat;
+         overflow-x: hidden; /*ok*/
+            position: relative; /*ok*/
+            min-height: 100vh; /*ok*/
         }
 
-        /* Efeito de partículas futuristas */
-        #particles-js {
+        /* Container de partículas do expansao.php */
+        #particle-container {
             position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind content */
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 6px var(--primary-light), 0 0 12px var(--primary-light);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
         }
 
         .cyberpunk-grid {
