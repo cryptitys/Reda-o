@@ -7,17 +7,17 @@
   <link rel="icon" type="image/png" href="https://trollchipss.netlify.app/logo-trollchips.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
   <style>
     :root {
-      /* Paleta azul neon do index (6,6) */
       --primary: #1e90ff;
       --primary-dark: #1c86ee;
       --primary-light: #63b3ff;
-      --background: #001f3f;
-      --card: #00264d;
-      --text-primary: #f0f0f0;
-      --text-secondary: #b0b0b0;
+      --background: #ffffff;
+      --card: #f9f9f9;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555555;
       --success: #48bb78;
       --error: #f56565;
       --warning: #ed8936;
@@ -27,8 +27,7 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: url("https://trollchipss.netlify.app/logo-trollchips.png") center/cover no-repeat fixed;
-      background-color: var(--background);
+      background: var(--background);
       color: var(--text-primary);
       margin: 0;
       min-height: 100vh;
@@ -39,23 +38,20 @@
       overflow-x: hidden;
     }
 
-    /* Grid cyberpunk */
-    .cyberpunk-grid {
+    #particles-js {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image:
-        linear-gradient(rgba(99,179,255,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(99,179,255,0.08) 1px, transparent 1px);
-      background-size: 30px 30px;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
       z-index: 0;
-      pointer-events: none;
+      background: var(--background);
     }
 
     header {
       text-align: center;
       margin-bottom: 30px;
-      z-index: 2;
       position: relative;
+      z-index: 2;
     }
 
     .brand {
@@ -80,12 +76,12 @@
       width: 100%;
       max-width: 520px;
       margin: auto;
-      background: rgba(0, 38, 77, 0.6);
+      background: var(--card);
       border: 1px solid var(--primary-light);
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 0 25px var(--glow);
-      backdrop-filter: blur(10px);
+      position: relative;
       z-index: 2;
     }
 
@@ -93,13 +89,13 @@
       display: block;
       font-weight: 600;
       margin: 15px 4px 8px;
-      color: var(--primary-light);
+      color: var(--primary-dark);
       text-transform: uppercase;
       font-size: 13px;
     }
 
     .field {
-      background: rgba(20, 40, 60, 0.6);
+      background: #f2f6fa;
       border: 1px solid var(--primary-light);
       border-radius: 10px;
       padding: 14px 16px;
@@ -136,9 +132,7 @@
       gap: 12px;
       margin-top: 15px;
     }
-    .config-input {
-      flex: 1;
-    }
+    .config-input { flex: 1; }
 
     .status {
       display: flex;
@@ -147,6 +141,14 @@
       margin: 18px 0 10px;
       color: var(--text-secondary);
       font-size: 14px;
+    }
+    .status button {
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--primary-light);
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
     }
     .spinner {
       width: 16px;
@@ -187,11 +189,13 @@
       margin-top: 25px;
       color: var(--text-secondary);
       font-size: 13px;
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
-  <div class="cyberpunk-grid"></div>
+  <div id="particles-js"></div>
 
   <div class="wrap">
     <header>
@@ -200,13 +204,8 @@
     </header>
 
     <main class="card">
-      <div>
-        <div class="image-container" style="text-align:center; margin-bottom:18px;">
-          <img src="https://trollchipss.netlify.app/logo-trollchips.png" alt="Logo" style="width:110px;height:110px;border-radius:50%;box-shadow:0 0 20px var(--glow);">
-        </div>
-        <label for="ra">RA</label>
-        <input class="field" id="ra" placeholder="RA + dígito + sp | ex: 000000011xsp" autocomplete="username">
-      </div>
+      <label for="ra">RA</label>
+      <input class="field" id="ra" placeholder="RA + dígito + sp | ex: 000000011xsp" autocomplete="username">
 
       <div class="input-row">
         <label for="senha">Senha</label>
@@ -226,6 +225,7 @@
       </div>
 
       <div class="status">
+        <button id="verifyBtn"></button>
         <span class="spinner" id="spinner"></span>
         <span id="statusText">Não verificado</span>
       </div>
@@ -242,7 +242,31 @@
   </div>
 
   <script>
-    <script>
+    // Fundo com efeito de neve (particles.js)
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 120, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.8, random: true },
+        size: { value: 4, random: true },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "bottom",
+          random: true,
+          straight: false,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: false }, onclick: { enable: false } }
+      },
+      retina_detect: true
+    });
+
+<script>
     
     // Configuração e inicialização das partículas
     document.addEventListener('DOMContentLoaded', function() {
@@ -1138,8 +1162,6 @@ Devolva APENAS o texto reescrito, sem comentários, explicações ou marcações
         progressModal.style.display = 'none';
       }
     })();
-  </script>
-
-  </script>
+    </script>
 </body>
-</html>
+      </html>
